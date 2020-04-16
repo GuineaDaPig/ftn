@@ -1,0 +1,6 @@
+@tag tick
+
+define objective time
+set dawn->time=6000
+set dusk->time=13000
+store result score Time time run time query daytime 

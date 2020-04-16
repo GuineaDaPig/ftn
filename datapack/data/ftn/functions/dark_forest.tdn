@@ -1,0 +1,69 @@
+@require ftn:guin_main
+eval File.out.writeData(
+    "data/ftn/predicates/dark_forest_hill.json",
+    (
+     JSON.stringify(
+            {
+            
+            "condition": "minecraft:location_check",
+            "predicate": {
+            "biome": "minecraft:dark_forest_hills",
+            "dimension": "minecraft:overworld",
+            "light": {
+            "light": {
+            "min": 0,
+            "max": 8
+                     }
+                  }
+                }
+            },
+            false
+        )   
+    )
+)
+
+eval File.out.writeData(
+    "data/ftn/predicates/dark_forest.json",
+    (
+     JSON.stringify(
+            {
+            
+            "condition": "minecraft:location_check",
+            "predicate": {
+            "biome": "minecraft:dark_forest",
+            "dimension": "minecraft:overworld",
+            "light": {
+            "light": {
+            "min": 0,
+            "max": 8
+                     }
+                  }
+                }
+            },
+            false
+        )   
+    )
+)
+
+define entity default player {
+    ticking 1s function {
+       if score Time time >= dawn time unless score Time time <= dusk time function { 
+        if predicate ftn:dark_forest function {
+            effect give @s blindness 2 0 true
+            particle minecraft:enchant ~ ~ ~ 1 1 1 1 10 force
+        }
+        if predicate ftn:dark_forest_hills function {
+            effect give @s blindness 2 0 true
+            particle minecraft:enchant ~ ~ ~ 1 1 1 1 10 force
+        }
+    } 
+    }
+    ticking 30s function {
+     if score Time time >= dawn time unless score Time time <= dusk time function { 
+        if predicate ftn:dark_forest function {
+        playsound minecraft:ambient.soul_sand_valley.mood ambient @s ~ ~ ~ 2 0 1
+        }
+        }
+    }
+}
+

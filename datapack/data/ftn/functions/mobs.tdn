@@ -1,0 +1,24 @@
+@tag tick
+@require ftn:guin_main
+@require ftn:dark_forest
+
+define function check {
+    set @s->rando = @s.UUID[0]
+    set @s->rando /= 100000000 
+    tag @s add checked
+}
+at @a as @e[tag=!checked,type=!player,type=!armor_stand,type=!item,type=!minecraft:area_effect_cloud,distance=..32] function ftn:mobs/check
+
+#skeleton
+define entity default minecraft:skeleton{
+    ticking function {
+        if predicate ftn:dark_forest function{
+                if entity @s[scores={rando=0..}] function {
+                summon minecraft:wither_skeleton ~ ~ ~ {Health:40f,CustomName:'{"text":"Hunter","color":"dark_purple","italic":false}',HandItems:[{id:"minecraft:stone_sword",Count:1b,tag:{display:{Name:'[{"text":"Hunter\'s","color":"dark_purple","bold":true},{"text":" Knife","color":"white"}]'},Enchantments:[{id:"minecraft:sharpness",lvl:2s}]}},{}],ArmorItems:[{},{},{id:"minecraft:leather_chestplate",Count:1b,tag:{display:{color:2693389},Enchantments:[{id:"minecraft:protection",lvl:2s}]}},{id:"minecraft:leather_helmet",Count:1b,tag:{display:{color:2693389},Enchantments:[{id:"minecraft:protection",lvl:2s}]}}],
+                    Attributes:[{name:generic.followRange,Base:30.0d},{Base:-0.1d,name:generic.knockbackResistance},{Base:12.0d,name:generic.attackDamage}]}
+                teleport @s ~ -215 ~
+                 }        
+
+        }
+    }
+}

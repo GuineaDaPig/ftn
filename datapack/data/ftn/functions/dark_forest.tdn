@@ -1,4 +1,6 @@
 @require ftn:guin_main
+@tag tick
+@require ftn:mobs
 eval File.out.writeData(
     "data/ftn/predicates/dark_forest_hill.json",
     (
@@ -56,7 +58,7 @@ eval File.out.writeData(
 
 define entity default player {
     ticking 1s function {
-        if predicate ftn:light_check if score Time time >= dawn time unless score Time time <= dusk time function { 
+        if predicate ftn:light_check if score Time time <= dawn time unless score Time time <= dusk time function { 
         if predicate ftn:dark_forest function {
             effect give @s blindness 4 0 true
             particle minecraft:enchant ~ ~ ~ 1 1 1 1 10 force
@@ -68,7 +70,7 @@ define entity default player {
     } 
     }
     ticking 30s function {
-     if predicate ftn:light_check if score Time time >= dawn time unless score Time time <= dusk time function { 
+     if predicate ftn:light_check if score Time time <= dawn time unless score Time time <= dusk time function { 
         if predicate ftn:dark_forest function {
         playsound minecraft:ambient.soul_sand_valley.mood ambient @s ~ ~ ~ 2 0 1
         }
@@ -76,3 +78,34 @@ define entity default player {
     }
 }
 
+
+#skeleton
+define entity default minecraft:skeleton{
+    ticking function {
+        if entity @s[tag=custom] unless entity @s[tag=checked] function {
+        if predicate ftn:dark_forest function{
+                if entity @s[scores={rando=0..}] function {
+                summon minecraft:skeleton ~ ~ ~ {Tags:["custom","checked"],Health:40f,CustomName:'{"text":"Hunter","color":"dark_purple","italic":false}',HandItems:[{id:"minecraft:stone_sword",Count:1b,tag:{display:{Name:'[{"text":"Hunter\'s","color":"dark_purple","bold":true},{"text":" Knife","color":"white"}]'},Enchantments:[{id:"minecraft:sharpness",lvl:2s}]}},{}],ArmorItems:[{},{},{id:"minecraft:leather_chestplate",Count:1b,tag:{display:{color:2693389},Enchantments:[{id:"minecraft:protection",lvl:2s}]}},{id:"minecraft:leather_helmet",Count:1b,tag:{display:{color:2693389},Enchantments:[{id:"minecraft:protection",lvl:2s}]}}],
+                    Attributes:[{Base:30.0d,minecraft:generic.follow_range},{Base:-0.1d,minecraft:generic.knockback_resistance},{Base:12.0d,minecraft:generic.attack_damage}]}
+                teleport @s ~ -215 ~
+                 }        
+                if entity @s[scores={rando=..0}] function {
+                data merge entity @s {ArmorItems:[{},{},{},{id:"minecraft:leather_helmet",Count:1b}],Attributes:[{Base:15.0d,minecraft:generic.follow_range}]}      
+        }
+    }
+            tag @s add checked
+ }
+    
+}
+} 
+
+#endormen
+define entity default minecraft:enderman{
+    ticking function {
+    if entity @s[tag=custom] unless entity @s[tag=checked] if predicate ftn:dark_forest function{
+            summon witch ~ ~ ~ {Tags:["checked"]}
+            teleport @s ~ -215 ~
+}
+        tag @s add checked
+    }
+}

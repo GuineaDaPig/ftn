@@ -1,7 +1,8 @@
 @tag tick
 
+
 define objective time
 define objective rando
-set dawn->time=6000
+set dawn->time=23000
 set dusk->time=13000
 store result score Time time run time query daytime 
